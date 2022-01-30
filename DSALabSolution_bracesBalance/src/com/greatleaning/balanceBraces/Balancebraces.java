@@ -2,6 +2,7 @@ package com.greatleaning.balanceBraces;
 
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.Stack;
 
 public class Balancebraces {
 	
@@ -24,47 +25,48 @@ public class Balancebraces {
 		}
 		else
 		{
-			Deque<String> deque
-            = new LinkedList<String>();
+			Stack<Character> stack
+            = new Stack<Character>();
 			
-			for (int i = 0; i < inputBraceSeq.length(); i++)
-			{
-				deque.add(Character.toString(inputBraceSeq.charAt(i)));
-			}
-			
-			//Check whether brackets are balanced by comparing first and last elements
-		    while(!deque.isEmpty())
-		    {
-		    	String check = deque.removeFirst();
-		    	if(check.equals("(")){
-		    		if(deque.isEmpty() || !deque.removeLast().equals(")")){
-		    			// Unbalanced break
-		    			ret = false;
-		    			break;
-		    		}
-		    	}
-		    	else if(check.equals("{")){
-		    		if(deque.isEmpty() || !deque.removeLast().equals("}")){
-		    			// Unbalanced break
-		    			ret = false;
-		    			break;
-		    		}
-		    	}
-		    	else if(check.equals("[")){
-		    		if(deque.isEmpty() || !deque.removeLast().equals("]")){
-		    			// Unbalanced break
-		    			ret = false;
-		    			break;
-		    		}
-		    	}
-		    	else {
-		    		ret = false;
-	    			break;	
-		    	}
-		    		
-		    }
+			for(int i = 0; i<inputBraceSeq.length(); i++){
+			      char ch = inputBraceSeq.charAt(i);
+			      // push open brackets to stack and
+			      // compare whether open brackets has occurred if there are
+			      // closing brackets
+			      if(ch=='{'||ch=='('||ch=='['){
+			        stack.push(ch);
+			      }else if(stack.isEmpty()){
+			    	  ret = false;
+			    	  break;
+			      }
+			      else if(ch=='}'){
+			        if(stack.peek()=='{'){
+			          stack.pop();
+			        }
+			        else{ret = false;break;}
+			        
+			      }else if(ch==']'){
+			        if(stack.peek()=='['){
+			          stack.pop();
+			        }
+			        else{ret = false; break;}
+			           
+			      }else if(ch==')'){
+			        if(stack.peek()=='('){
+			          stack.pop();
+			        }
+			        else{ret = false;break;}
+			               
+			      }
+			    }
+			    if(!stack.isEmpty()){
+			      ret = false;
+			    }
+			    else
+			    	ret = true;
+			    
+			    return ret;
 		}
-		return ret;
 	}
 
 }
